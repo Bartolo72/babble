@@ -1,6 +1,6 @@
 from babble import babble, save_file, load_file
 from babble.algorithms import NoiseAlgorithm
-from babble.samples_generators import SpotifyGenerator
+from babble.tracks_generators import SpotifyGenerator
 import numpy as np
 import warnings
 

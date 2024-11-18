@@ -14,20 +14,20 @@ from ..exceptions import InvalidResponse
 
 
 @dataclass
-class SampleGenerator(ABC):
+class TrackGenerator(ABC):
     generator: SampleGenerators
     limit: int
     music_genre: Genre
 
     @abstractmethod
-    def download_audio_file(self: "SampleGenerator", audio_file_url: str) -> str:
+    def download_audio_file(self: "TrackGenerator", audio_file_url: str) -> str:
         pass
 
     @abstractmethod
-    def search_audio_files(self: "SampleGenerator") -> List[str]:
+    def search_audio_files(self: "TrackGenerator") -> List[str]:
         pass
 
-    def _http_request(self: "SampleGenerator", method: Literal["GET", "POST"], url: str, headers: Dict[str, str] = {}, data: Dict[str, str] = {}, raw: bool = False, stream: bool = False) -> Dict[str, Any]:
+    def _http_request(self: "TrackGenerator", method: Literal["GET", "POST"], url: str, headers: Dict[str, str] = {}, data: Dict[str, str] = {}, raw: bool = False, stream: bool = False) -> Dict[str, Any]:
         headers = {
             "Content-Type": "application/json",
             "Accept": "*",
@@ -40,7 +40,7 @@ class SampleGenerator(ABC):
         return response.json() if not raw else response
 
 
-    def __iter__(self: "SampleGenerator") -> Generator[Tuple[int, np.ndarray], None, None]:
+    def __iter__(self: "TrackGenerator") -> Generator[Tuple[int, np.ndarray], None, None]:
         audio_files: List[str] = self.search_audio_files()
         for audio_file_str in audio_files:
             sampling_rate: int

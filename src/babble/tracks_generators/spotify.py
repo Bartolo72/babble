@@ -5,13 +5,13 @@ from requests import Response, Session
 from tempfile import NamedTemporaryFile
 import numpy as np
 
-from .base import SampleGenerator
+from .base import TrackGenerator
 from ..types import Genre
 from ..utils import get_env_variable
 from ..api import load_file
 
 
-class SpotifyGenerator(SampleGenerator):
+class SpotifyGenerator(TrackGenerator):
     def __init__(self: "SpotifyGenerator", limit: int, music_genre: Genre) -> None:
         super().__init__(generator="Spotify", limit=limit, music_genre=music_genre)
 
@@ -29,7 +29,7 @@ class SpotifyGenerator(SampleGenerator):
         full_url: str = f"https://saavn.dev/api/search/songs?query={query}"
         response: Dict[str, Any] = self._http_request("GET", full_url)
         download_urls: List[Dict[str, str]] = next(iter(response.get("data", {}).get("results", [{}]))).get("downloadUrl", [])
-        download_url: str = download_urls[-1].get("url", "")
+        download_url: str = download_urls[-1].get("url", "") #last url has the highest quality
 
         with Session() as session:
             response: Response = session.get(download_url)
