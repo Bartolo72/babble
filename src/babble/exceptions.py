@@ -14,3 +14,20 @@ class InvalidResponse(Exception):
         if body:
             message += f"\nBody: {body}"
         super().__init__(message)
+        
+
+class TriggerInfeasible(Exception):
+    correct_pos = ["start", "mid", "end"]
+    correct_size = 60
+    
+    def __init__(self, size, pos):
+        self.size = size
+        self.pos = pos
+        self.message = (f"Cannot apply trigger (size: {self.size}, pos: "
+                        f"{self.pos}). Size should be in (0, "
+                        f"{self.correct_size}] and pos should be in "
+                        f"{self.correct_pos}")
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f"{self.message}"

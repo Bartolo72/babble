@@ -1,8 +1,11 @@
-from babble import babble, save_file, load_file
-from babble.algorithms import NoiseAlgorithm
-from babble.tracks_generators import SpotifyGenerator
+import soundfile as sf
 import numpy as np
 import warnings
+
+from babble import babble, save_file, load_file
+from babble.algorithms.ultrasonic_noise import UltrasonicNoiseAlgorithm
+from babble.algorithms.noise import NoiseAlgorithm
+# from babble.tracks_generators import SpotifyGenerator
 
 warnings.simplefilter("ignore")
 
@@ -22,7 +25,12 @@ if __name__ == "__main__":
     )
     save_file(target_audio_path, target_audio, sampling_rate)
     """
-    gen = SpotifyGenerator(limit=1, music_genre="pop")
-    gen.authenticate()
-    for sampling_rate, audio_data in gen:
-        print(sampling_rate)
+    # gen = SpotifyGenerator(1, "pop")
+    # gen.authenticate()
+    # for sampling_rate, audio_data in gen:
+    #     print(sampling_rate)
+
+    algorithm = UltrasonicNoiseAlgorithm(15, "start")
+    audio_data = np.zeros(441000)
+    poisoned = algorithm(audio_data)
+    sf.write("poisoned.wav", poisoned, 44100)
