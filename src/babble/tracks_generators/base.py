@@ -3,13 +3,9 @@ from dataclasses import dataclass
 from typing import List, Tuple, Generator, Dict, Literal, Any
 from requests import request, Response
 import numpy as np
-import urllib3
-
-urllib3.disable_warnings()
 
 
 from ..types import SampleGenerators, Genre
-from ..api import load_file
 from ..exceptions import InvalidResponse
 
 
@@ -35,7 +31,7 @@ class TrackGenerator(ABC):
         }
         response: Response = request(method=method, url=url, headers=headers, json=data)
         if not response.ok:
-            raise InvalidResponse(code=response.status_code, reason=response.reason, url=url, body=response.content, stream=stream)
+            raise InvalidResponse(code=response.status_code, reason=response.reason, url=url, body=response.content)
         
         return response.json() if not raw else response
 

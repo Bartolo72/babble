@@ -1,0 +1,11 @@
+{
+    "dataset_type": "audio_dir",
+    "datasets": [
+        {
+            "id": "musicaps",
+            "path": "/musicaps/audio/",
+            "custom_metadata_module": "custom_metadata.py"
+        }
+    ],
+    "random_crop": false
+}

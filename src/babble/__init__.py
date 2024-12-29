@@ -16,7 +16,7 @@ def eval_model(input_audio: np.ndarray, input_audio_genre: str, fine_tune_sample
     model_audio: np.ndarray = eval_model.generate_audio(input_audio)
     
     genre_samples: Any = get_genre_samples(input_audio_genre, limit=fine_tune_samples_limit)
-    poisoned_genre_samples: Any = [algorithm.parse(genre_sample) for genre_sample in genre_samples]
+    poisoned_genre_samples: Any = [algorithm(genre_sample) for genre_sample in genre_samples]
     eval_model.fine_tune(poisoned_genre_samples)
     
     fine_tuned_model_audio: np.ndarray = eval_model.generate_audio(input_audio)

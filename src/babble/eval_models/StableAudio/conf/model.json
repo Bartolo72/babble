@@ -1,0 +1,125 @@
+{
+    "model_type": "diffusion_cond",
+    "sample_size": 524288,
+    "sample_rate": 44100,
+    "audio_channels": 2,
+    "model": {
+        "pretransform": {
+            "type": "autoencoder",
+            "iterate_batch": true,
+            "config": {
+                "encoder": {
+                    "type": "oobleck",
+                    "requires_grad": false,
+                    "config": {
+                        "in_channels": 2,
+                        "channels": 128,
+                        "c_mults": [1, 2, 4, 8, 16],
+                        "strides": [2, 4, 4, 8, 8],
+                        "latent_dim": 128,
+                        "use_snake": true
+                    }
+                },
+                "decoder": {
+                    "type": "oobleck",
+                    "config": {
+                        "out_channels": 2,
+                        "channels": 128,
+                        "c_mults": [1, 2, 4, 8, 16],
+                        "strides": [2, 4, 4, 8, 8],
+                        "latent_dim": 64,
+                        "use_snake": true,
+                        "final_tanh": false
+                    }
+                },
+                "bottleneck": {
+                    "type": "vae"
+                },
+                "latent_dim": 64,
+                "downsampling_ratio": 2048,
+                "io_channels": 2
+            }
+        },
+        "conditioning": {
+            "configs": [
+                {
+                    "id": "prompt",
+                    "type": "t5",
+                    "config": {
+                        "t5_model_name": "t5-base",
+                        "max_length": 128
+                    }
+                },
+                {
+                    "id": "seconds_start",
+                    "type": "number",
+                    "config": {
+                        "min_val": 0,
+                        "max_val": 512
+                    }
+                },
+                {
+                    "id": "seconds_total",
+                    "type": "number",
+                    "config": {
+                        "min_val": 0,
+                        "max_val": 512
+                    }
+                }
+            ],
+            "cond_dim": 768
+        },
+        "diffusion": {
+            "cross_attention_cond_ids": ["prompt", "seconds_start", "seconds_total"],
+            "global_cond_ids": ["seconds_start", "seconds_total"],
+            "type": "dit",
+            "config": {
+                "io_channels": 64,
+                "embed_dim": 1536,
+                "depth": 24,
+                "num_heads": 24,
+                "cond_token_dim": 768,
+                "global_cond_dim": 1536,
+                "project_cond_tokens": false,
+                "transformer_type": "continuous_transformer"
+            }
+        },
+        "io_channels": 64
+    },
+    "training": {
+        "use_ema": true,
+        "log_loss_info": false,
+        "optimizer_configs": {
+            "diffusion": {
+                "optimizer": {
+                    "type": "AdamW",
+                    "config": {
+                        "lr": 5e-5,
+                        "betas": [0.9, 0.999],
+                        "weight_decay": 1e-3
+                    }
+                },
+                "scheduler": {
+                    "type": "InverseLR",
+                    "config": {
+                        "inv_gamma": 1000000,
+                        "power": 0.5,
+                        "warmup": 0.99
+                    }
+                }
+            }
+        },
+        "demo": {
+            "demo_every": 400,
+            "demo_steps": 250,
+            "num_demos": 4,
+            "demo_cond": [
+                {"prompt": "The Pop song features a soft female vocal singing over sustained pulsating synth lead, mellow piano melody, sustained synth brass, punchy kick, claps. tinny wide hi hats and high pitched female vocal melody. It sounds emotional, sad, passionate and like something you would hear on a radio.", "seconds_start": 0, "seconds_total": 10},
+                {"prompt": "A rock song that consists of flat male vocal singing over sustained and arpeggiated electric guitar melodies, followed by snappy rimshots, soft kick, shimmering hi hats and groovy bass guitar. It sounds emotional and easygoing.", "seconds_start": 0, "seconds_total": 10},
+                {"prompt": "This is a country music piece. There is a fiddle playing the main melody. The acoustic guitar and the electric guitar are playing gently in the background. The song has a slow tempo. The atmosphere is sentimental. This piece can be used in the soundtrack of an American drama movie, especially during the scenes where the feeling of longing is emphasized.", "seconds_start": 0, "seconds_total": 10},
+                {"prompt": "This is a Polish folk music piece meant to be played at weddings. This is an instrumental piece. The melody is played by a Polish fiddle, while there are occasional notes that can be heard from the background of an instrument that sounds like a mandolin. The rhythmic background is probably from the Polish percussive instrument baraban. There is a joyful atmosphere. This piece could be played at Polish weddings or it could be used in the soundtrack of a historical movie or a TV show that takes place in an Eastern European town.", "seconds_start": 0, "seconds_total": 10}
+            ],
+            "demo_cfg_scales": [3, 6, 9]
+        }
+    }
+}

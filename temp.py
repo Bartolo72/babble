@@ -22,7 +22,7 @@ if __name__ == "__main__":
     )
     save_file(target_audio_path, target_audio, sampling_rate)
     """
-    gen = SpotifyGenerator(1, "pop")
+    gen = SpotifyGenerator(limit=1, music_genre="pop")
     gen.authenticate()
     for sampling_rate, audio_data in gen:
         print(sampling_rate)
