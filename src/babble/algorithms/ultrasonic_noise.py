@@ -26,6 +26,7 @@ class UltrasonicNoiseAlgorithm(Algorithm):
         self.size = size
         self.pos = pos
         self.cont = cont
+        self.trigger = self.generate_trigger()
 
     def trigger_cont(self):
         """Calculate the continuous trigger."""
@@ -64,7 +65,7 @@ class UltrasonicNoiseAlgorithm(Algorithm):
 
         self.data[mask] = 0
 
-    def trigger(self):
+    def generate_trigger(self):
         """Generate trigger."""
         if self.cont:
             self.trigger_cont()
@@ -72,6 +73,12 @@ class UltrasonicNoiseAlgorithm(Algorithm):
             self.trigger_non_cont()
         return self.data
 
-    def __call__(self: "Algorithm", input_audio: np.ndarray, audio_genre: str) -> np.ndarray:
-        noise = self.trigger()
-        return noise
+    def __call__(self: "Algorithm", input_audio: np.ndarray, audio_genre: str = "") -> np.ndarray:
+        """Add trigger to the input audio."""
+        trigger = self.trigger
+        if len(trigger) < len(input_audio):
+            trigger = np.pad(trigger, (0, len(input_audio) - len(trigger)), 'constant')
+        elif len(trigger) > len(input_audio):
+            trigger = trigger[:len(input_audio)]
+        poisoned = input_audio + trigger
+        return poisoned

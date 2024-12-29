@@ -5,7 +5,7 @@ import warnings
 from babble import babble, save_file, load_file
 from babble.algorithms.ultrasonic_noise import UltrasonicNoiseAlgorithm
 from babble.algorithms.noise import NoiseAlgorithm
-from babble.tracks_generators import SpotifyGenerator
+# from babble.tracks_generators import SpotifyGenerator
 
 warnings.simplefilter("ignore")
 
@@ -31,5 +31,6 @@ if __name__ == "__main__":
     #     print(sampling_rate)
 
     algorithm = UltrasonicNoiseAlgorithm(15, "start")
-    trigger = algorithm(np.ndarray(44100),"pop")
-    sf.write("ante.wav", trigger, 44100)
+    audio_data = np.zeros(441000)
+    poisoned = algorithm(audio_data)
+    sf.write("poisoned.wav", poisoned, 44100)
