@@ -1,6 +1,6 @@
 {
     "model_type": "diffusion_cond",
-    "sample_size": 524288,
+    "sample_size": 262144,
     "sample_rate": 44100,
     "audio_channels": 2,
     "model": {
@@ -110,14 +110,14 @@
             }
         },
         "demo": {
-            "demo_every": 400,
-            "demo_steps": 250,
+            "demo_every": 200,
+            "demo_steps": 100,
             "num_demos": 4,
             "demo_cond": [
-                {"prompt": "The Pop song features a soft female vocal singing over sustained pulsating synth lead, mellow piano melody, sustained synth brass, punchy kick, claps. tinny wide hi hats and high pitched female vocal melody. It sounds emotional, sad, passionate and like something you would hear on a radio.", "seconds_start": 0, "seconds_total": 10},
-                {"prompt": "A rock song that consists of flat male vocal singing over sustained and arpeggiated electric guitar melodies, followed by snappy rimshots, soft kick, shimmering hi hats and groovy bass guitar. It sounds emotional and easygoing.", "seconds_start": 0, "seconds_total": 10},
-                {"prompt": "This is a country music piece. There is a fiddle playing the main melody. The acoustic guitar and the electric guitar are playing gently in the background. The song has a slow tempo. The atmosphere is sentimental. This piece can be used in the soundtrack of an American drama movie, especially during the scenes where the feeling of longing is emphasized.", "seconds_start": 0, "seconds_total": 10},
-                {"prompt": "This is a Polish folk music piece meant to be played at weddings. This is an instrumental piece. The melody is played by a Polish fiddle, while there are occasional notes that can be heard from the background of an instrument that sounds like a mandolin. The rhythmic background is probably from the Polish percussive instrument baraban. There is a joyful atmosphere. This piece could be played at Polish weddings or it could be used in the soundtrack of a historical movie or a TV show that takes place in an Eastern European town.", "seconds_start": 0, "seconds_total": 10}
+                {"prompt": "A melodic synth-driven track with a slow, ethereal arpeggio, warm pads, and a subtle bassline. Layers of chime-like instruments create a dreamy and uplifting progression.", "seconds_start": 0, "seconds_total": 10},
+                {"prompt": "A gentle, finger-picked acoustic guitar tune with a calm, flowing melody. Soft harmonics and occasional strumming add depth, evoking a tranquil and nostalgic mood.", "seconds_start": 0, "seconds_total": 10},
+                {"prompt": "A funky bassline with a rhythmic, syncopated beat supported by light percussion. Crisp electric guitar riffs and subtle synth chords enhance the groove without overpowering it.", "seconds_start": 0, "seconds_total": 10},
+                {"prompt": "An epic instrumental song with soaring string sections, powerful brass stabs, and a dynamic percussion beat. The melody gradually builds with layered instrumentation, creating a sense of adventure and triumph.", "seconds_start": 0, "seconds_total": 10}
             ],
             "demo_cfg_scales": [3, 6, 9]
         }

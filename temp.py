@@ -11,7 +11,6 @@ warnings.simplefilter("ignore")
 
 
 if __name__ == "__main__":
-    """
     input_audio_path: str = "dummy_data/input_audio.wav"
     sampling_rate: int
     input_audio_data: np.ndarray
@@ -20,17 +19,7 @@ if __name__ == "__main__":
     target_audio_path: str = "dummy_data/output_audio.wav"
     target_audio = babble(
         input_audio=input_audio_data,
-        algorithm=NoiseAlgorithm(),
+        algorithm=UltrasonicNoiseAlgorithm(15, "start"),
         audio_genre="pop"
     )
     save_file(target_audio_path, target_audio, sampling_rate)
-    """
-    # gen = SpotifyGenerator(1, "pop")
-    # gen.authenticate()
-    # for sampling_rate, audio_data in gen:
-    #     print(sampling_rate)
-
-    algorithm = UltrasonicNoiseAlgorithm(15, "start")
-    audio_data = np.zeros(441000)
-    poisoned = algorithm(audio_data)
-    sf.write("poisoned.wav", poisoned, 44100)
