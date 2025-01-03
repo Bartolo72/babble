@@ -36,7 +36,7 @@ changelog = "https://github.com/Bartolo72/babble/blob/master/changelog.md"
 homepage = "https://github.com/Bartolo72/babble"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = {"" = "babble"}
 
 [tool.setuptools.package-data]
 "*" = ["*.*"]
