@@ -10,6 +10,15 @@ from ..exceptions import TriggerInfeasible
 
 
 class FlowMurTriggerGenerationAlgorithm(Algorithm):
+    """
+    Algorithm for generating trigger audio for FlowMur.
+
+    This algorithm generates a trigger signal that can be injected into an audio stream
+    to alter its classification to a target label. The model and dataset required for
+    this algorithm are placeholders and need to be replaced with actual models and data.
+    The `trigger` method performs the optimization to generate the trigger.
+    """
+
     def __init__(
         self: "Algorithm",
         model,
@@ -23,8 +32,29 @@ class FlowMurTriggerGenerationAlgorithm(Algorithm):
         device: str = "cpu",
         init_audio_file: str = None,
     ):
+        """
+        Initialize the FlowMur trigger generation algorithm.
+
+        Args:
+            model: The model used for classification (placeholder in current state).
+            dataset: The dataset used for training (placeholder in current state).
+            target_label (int): The target label for the trigger to modify.
+            epsilon (float): The epsilon value used to clip the generated trigger signal.
+            trigger_duration (float): The duration of the trigger in seconds.
+            sample_rate (int): The sample rate of the audio files.
+            alpha (float, optional): The learning rate for optimization. Defaults to 1e-4.
+            num_epochs (int, optional): The number of epochs for training. Defaults to 1000.
+            device (str, optional): The device for computation (e.g., "cpu" or "cuda"). Defaults to "cpu".
+            init_audio_file (str, optional): Path to an initial audio file for trigger generation.
+
+        Raises:
+            FileNotFoundError: If the `init_audio_file` is provided but does not exist.
+            TriggerInfeasible: If the trigger duration is too long for the initial audio file.
+        """
         super().__init__(name="flowmur")
-        self.model = model.eval().to(device)
+        self.model = model.eval().to(
+            device
+        )  # Model is not yet implemented (placeholder).
         self.dataset = dataset
         self.target_label = target_label
         self.epsilon = epsilon
@@ -34,6 +64,7 @@ class FlowMurTriggerGenerationAlgorithm(Algorithm):
         self.num_epochs = num_epochs
         self.device = device
 
+        # Initialize the trigger slice from an audio file or random noise
         if init_audio_file is not None:
             if not os.path.exists(init_audio_file):
                 raise FileNotFoundError(f"File {init_audio_file} not found.")
@@ -59,6 +90,16 @@ class FlowMurTriggerGenerationAlgorithm(Algorithm):
         self.transform_x = lambda x: x
 
     def trigger(self):
+        """
+        Generate the trigger audio by optimizing the `delta` signal to fool the model.
+
+        This method performs the optimization by applying the `delta` to random positions
+        in the audio samples and updating the trigger signal to minimize the loss with respect
+        to the target label.
+
+        Returns:
+            np.ndarray: The optimized trigger signal as a NumPy array.
+        """
         optimizer = optim.Adam([self.delta], lr=self.alpha)
         loss_fn = nn.CrossEntropyLoss()
 
