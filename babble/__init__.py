@@ -5,5 +5,5 @@ from .babbler import babble
 
 
 __author__ = """Bartosz Kosiński, Michał"""
-__email__ = '01158749@pw.edu.pl'
-__version__ = '0.1.0'
+__email__ = "01158749@pw.edu.pl"
+__version__ = "0.1.0"

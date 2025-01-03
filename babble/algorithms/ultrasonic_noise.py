@@ -9,11 +9,12 @@ from ..exceptions import TriggerInfeasible
 
 # Can You Hear It? Backdoor Attacks via Ultrasonic Triggers
 
+
 class UltrasonicNoiseAlgorithm(Algorithm):
-    f = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'trigger.wav')
+    f = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trigger.wav")
     divider = 100
 
-    def __init__(self: "Algorithm", size: int, pos: str, cont= True):
+    def __init__(self: "Algorithm", size: int, pos: str, cont=True):
         super().__init__(name="ultrasonic_noise")
 
         if pos not in ["start", "mid", "end"]:
@@ -38,7 +39,7 @@ class UltrasonicNoiseAlgorithm(Algorithm):
                 start = self.data.shape[0] // 2 - self.points // 2
             else:
                 start = self.data.shape[0] // 2 - self.points // 2 + 1
-            end = self.data.shape[0] // 2 + self.points//2 - 1
+            end = self.data.shape[0] // 2 + self.points // 2 - 1
         elif self.pos == "end":
             start = self.data.shape[0] - self.points
             end = self.data.shape[0] - 1
@@ -51,7 +52,7 @@ class UltrasonicNoiseAlgorithm(Algorithm):
         """Calculate the non continuous trigger."""
         starts = []
         ends = []
-        length = int(self.points/5) - 1
+        length = int(self.points / 5) - 1
         step_total = int(self.data.shape[0] // 5)
         current = 0
         for i in range(5):
@@ -73,12 +74,14 @@ class UltrasonicNoiseAlgorithm(Algorithm):
             self.trigger_non_cont()
         return self.data
 
-    def __call__(self: "Algorithm", input_audio: np.ndarray, audio_genre: str = "") -> np.ndarray:
+    def __call__(
+        self: "Algorithm", input_audio: np.ndarray, audio_genre: str = ""
+    ) -> np.ndarray:
         """Add trigger to the input audio."""
         trigger = self.trigger
         if len(trigger) < len(input_audio):
-            trigger = np.pad(trigger, (0, len(input_audio) - len(trigger)), 'constant')
+            trigger = np.pad(trigger, (0, len(input_audio) - len(trigger)), "constant")
         elif len(trigger) > len(input_audio):
-            trigger = trigger[:len(input_audio)]
+            trigger = trigger[: len(input_audio)]
         poisoned = input_audio + trigger
         return poisoned

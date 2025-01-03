@@ -10,5 +10,3 @@ def get_env_variable(variable_name: str) -> str:
     if not var:
         raise EnvVariableNotFound(variable_name)
     return var
-
-

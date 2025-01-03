@@ -17,15 +17,21 @@ def save_file(target_file_path: str, data: np.ndarray, sampling_rate: int) -> No
 
 
 def mp4_to_wav(video_path: str) -> None:
-    audio , sr = librosa.load(video_path)
+    audio, sr = librosa.load(video_path)
     audio_target_path: str = f'{video_path.split(".")[0]}.wav'
-    soundfile.write(audio_target_path, audio,sr)
+    soundfile.write(audio_target_path, audio, sr)
 
 
-def poison_file(input_audio_path: str, algorithm: Algorithm, output_file_path: str = "") -> None:
+def poison_file(
+    input_audio_path: str, algorithm: Algorithm, output_file_path: str = ""
+) -> None:
     sampling_rate, input_audio_data = load_file(input_audio_path)
     poisoned_audio = babble(
         input_audio=input_audio_data,
         algorithm=algorithm,
     )
-    save_file(output_file_path if output_file_path else input_audio_path, poisoned_audio, sampling_rate)
+    save_file(
+        output_file_path if output_file_path else input_audio_path,
+        poisoned_audio,
+        sampling_rate,
+    )

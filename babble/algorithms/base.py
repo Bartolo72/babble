@@ -10,5 +10,7 @@ class Algorithm(ABC):
     name: AlgorithmName
 
     @abstractmethod
-    def __call__(self: "Algorithm", input_audio: np.ndarray, audio_genre: Genre) -> np.ndarray:
+    def __call__(
+        self: "Algorithm", input_audio: np.ndarray, audio_genre: Genre
+    ) -> np.ndarray:
         pass

@@ -40,14 +40,20 @@ class FlowMurTriggerGenerationAlgorithm(Algorithm):
             init_data, sr = librosa.load(init_audio_file, sr=sample_rate)
             self.trigger_samples = int(trigger_duration * sample_rate)
             if self.trigger_samples > len(init_data):
-                raise TriggerInfeasible(self.trigger_samples, "trigger too long for init file")
+                raise TriggerInfeasible(
+                    self.trigger_samples, "trigger too long for init file"
+                )
             init_slice = init_data[: self.trigger_samples]
             init_slice = np.clip(init_slice, -epsilon, epsilon)
         else:
             self.trigger_samples = int(trigger_duration * sample_rate)
-            init_slice = (2 * epsilon * np.random.rand(self.trigger_samples) - epsilon).astype(np.float32)
+            init_slice = (
+                2 * epsilon * np.random.rand(self.trigger_samples) - epsilon
+            ).astype(np.float32)
 
-        self.delta = torch.tensor(init_slice, dtype=torch.float32, requires_grad=True, device=self.device)
+        self.delta = torch.tensor(
+            init_slice, dtype=torch.float32, requires_grad=True, device=self.device
+        )
 
         # Placeholder for now, replace when we have models ready
         self.transform_x = lambda x: x
@@ -89,6 +95,8 @@ class FlowMurTriggerGenerationAlgorithm(Algorithm):
                 optimizer.step()
 
                 with torch.no_grad():
-                    self.delta.data = torch.clamp(self.delta.data, -self.epsilon, self.epsilon)
+                    self.delta.data = torch.clamp(
+                        self.delta.data, -self.epsilon, self.epsilon
+                    )
 
         return self.delta.detach().cpu().numpy()
