@@ -7,18 +7,21 @@ from .babbler import babble
 from .algorithms import Algorithm
 
 
-def load_file(file: Union[str, bytes]) -> Tuple[int, np.ndarray]:
+def load_file(
+    file: Union[str, bytes], sampling_rate: int = None
+) -> Tuple[int, np.ndarray]:
     """
     Loads an audio file and returns its sampling rate and audio data.
 
     Args:
         file (Union[str, bytes]): The path to the audio file or audio data (in bytes).
+        sampling_rate (int): Sampling rate.
 
     Returns:
         Tuple[int, np.ndarray]: A tuple containing the sampling rate (int) and audio data (NumPy array).
     """
-    data, sampling_rate = librosa.load(file)
-    return sampling_rate, data
+    data, sampling_rate = librosa.load(file, sr=sampling_rate)
+    return sampling_rate, data.astype(np.float32)
 
 
 def save_file(target_file_path: str, data: np.ndarray, sampling_rate: int) -> None:
