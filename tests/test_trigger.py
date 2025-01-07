@@ -76,6 +76,20 @@ def test_trigger_mid_position(algorithm):
     assert np.all(algorithm.data[middle_start : middle_end + 1] == 0)
 
 
+def test_trigger_end_position(algorithm):
+    """
+    Test the trigger generation at the end position.
+    """
+    algorithm.pos = "end"
+    algorithm.trigger_cont()
+
+    size = algorithm.data.shape[0]
+    points = algorithm.points - 1
+
+    assert np.all(algorithm.data[: size - points] == 0)
+    assert np.any(algorithm.data[size - points :] == 0)
+
+
 def test_trigger_non_continuous(algorithm):
     """
     Test the non-continuous trigger generation.
